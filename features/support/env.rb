@@ -15,8 +15,19 @@ when "firefox"
 when "chrome"
   @driver = :selenium_chrome
 when "headless"
+  Capybara.register_driver :selenium_chrome_headless do |app|
+    Capybara::Selenium::Driver.load_selenium
+    chrome_options = ::Selenium::WebDriver::Chrome::Options.new.tap do |opts|
+      opts.args << '--headless'
+      opts.args << '--disable-gpu' 
+      opts.args << '--disable-site-isolation-trials'
+      opts.args << '--no-sandbox'
+    end
+    Capybara::Selenium::Driver.new(app, browser: :chrome, options: chrome_options)
+  end
   @driver = :selenium_chrome_headless
-else
+  
+  else
   puts "Invalid browser"
 end
 

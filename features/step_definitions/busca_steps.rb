@@ -1,4 +1,5 @@
 Dado("que temos {string} do catalogo") do |file_name|
+  sleep 10
   file = YAML.load_file(File.join(Dir.pwd, "features/support/fixtures/#{file_name}.yaml"))
   file["movies"].each do |movie|
     Database.new.delete_movie(movie["title"])
